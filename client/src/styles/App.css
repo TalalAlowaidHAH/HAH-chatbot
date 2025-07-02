@@ -26,6 +26,11 @@
   font-weight: 600;
 }
 
+.company-logo {
+  height: 40px;
+  width: auto;
+}
+
 .user-info {
   display: flex;
   align-items: center;
@@ -302,7 +307,7 @@
 
 .quick-action-btn:hover:not(:disabled) {
   background-color: var(--bg-tertiary);
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
 }
 
 .action-icon {

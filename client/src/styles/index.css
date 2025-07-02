@@ -1,7 +1,8 @@
 :root {
-  --primary-color: #0078d4;
-  --primary-hover: #106ebe;
+  --primary-color: #152332;
+  --primary-hover: #0f1a26;
   --secondary-color: #6c757d;
+  --accent-color: #BDB8AF;
   --success-color: #28a745;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
@@ -11,7 +12,7 @@
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #e9ecef;
   --border-color: #dee2e6;
-  --text-primary: #212529;
+  --text-primary: #161a1f;
   --text-secondary: #6c757d;
   --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);

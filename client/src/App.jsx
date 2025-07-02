@@ -55,15 +55,24 @@ function App() {
       <div className="app">
         <header className="app-header">
           <div className="header-content">
-            <h1>HAH Email Assistant</h1>
-            {isAuthenticated && user && (
-              <div className="user-info">
-                <span>Welcome, {user.name || user.username}</span>
-                <button onClick={handleLogout} className="logout-btn">
-                  Logout
-                </button>
-              </div>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <h1>HAH Email Assistant</h1>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <img 
+                src="/hassan-allam-logo.png" 
+                alt="Hassan Allam Holding" 
+                className="company-logo"
+              />
+              {isAuthenticated && user && (
+                <div className="user-info">
+                  <span>Welcome, {user.name || user.username}</span>
+                  <button onClick={handleLogout} className="logout-btn">
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

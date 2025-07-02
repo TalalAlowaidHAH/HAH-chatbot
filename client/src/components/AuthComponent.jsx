@@ -39,7 +39,7 @@ const AuthComponent = ({ onLogin }) => {
               <li>🔍 Search and read specific emails</li>
               <li>✍️ Compose and send emails naturally</li>
               <li>↩️ Reply to messages quickly</li>
-              <li>🔒 Secure company-only access</li>
+              <li>🔒 Secure Hassan Allam company access</li>
             </ul>
           </div>
 
