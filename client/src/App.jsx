@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 import AuthComponent from './components/AuthComponent';
@@ -59,9 +59,9 @@ function App() {
               <h1>HAH Email Assistant</h1>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <img 
-                src="/hassan-allam-logo.png" 
-                alt="Hassan Allam Holding" 
+              <img
+                src="/hassan-allam-logo.png"
+                alt="Hassan Allam Holding"
                 className="company-logo"
               />
               {isAuthenticated && user && (
