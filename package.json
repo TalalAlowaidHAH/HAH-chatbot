@@ -1,0 +1,38 @@
+{
+  "name": "hah-chatbot",
+  "version": "1.0.0",
+  "description": "Microsoft Email Chatbot for Internal Use - Integrates with Microsoft Graph API for email management through conversational interface",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "nodemon server/index.js",
+    "client:dev": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd client && npm install"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^2.6.4",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "isomorphic-fetch": "^3.0.0",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "chatbot",
+    "microsoft",
+    "graph-api",
+    "email",
+    "oauth2"
+  ],
+  "author": "Hassan Allam Holding",
+  "license": "MIT"
+}
