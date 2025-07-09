@@ -25,11 +25,9 @@ const msalConfig = {
 // Create MSAL instance
 export const confidentialClientApp = new ConfidentialClientApplication(msalConfig);
 
-// Required scopes for Microsoft Graph
+// Required scopes for Microsoft Graph (matching Azure App Registration)
 export const requiredScopes = [
   'https://graph.microsoft.com/Mail.Read',
-  'https://graph.microsoft.com/Mail.Send',
-  'https://graph.microsoft.com/Mail.ReadWrite',
   'https://graph.microsoft.com/User.Read'
 ];
 

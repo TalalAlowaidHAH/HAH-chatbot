@@ -1,26 +1,64 @@
-import React, { useState } from 'react';
-import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../config/msalConfig';
+import React, { useState, useEffect } from 'react';
 
 const AuthComponent = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { instance } = useMsal();
 
-  const handleLogin = async () => {
+  useEffect(() => {
+    // Check for auth results in URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const authResult = urlParams.get('auth');
+    const authError = urlParams.get('error');
+
+    if (authResult === 'success') {
+      // Authentication successful, check user status
+      checkAuthStatus();
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (authError) {
+      handleAuthError(authError);
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
+  const handleAuthError = (errorCode) => {
+    switch (errorCode) {
+      case 'domain_restricted':
+        setError('Access denied: Please use your Hassan Allam company email account.');
+        break;
+      case 'oauth_error':
+        setError('Authentication failed. Please try again.');
+        break;
+      case 'auth_failed':
+        setError('Login failed. Please try again.');
+        break;
+      default:
+        setError('An error occurred during authentication. Please try again.');
+    }
+  };
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await fetch('/api/auth/user', {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        onLogin(userData.user);
+      }
+    } catch (error) {
+      console.error('Auth status check failed:', error);
+    }
+  };
+
+  const handleLogin = () => {
     setLoading(true);
     setError(null);
-
-    try {
-      const loginResponse = await instance.loginPopup(loginRequest);
-      console.log('Login successful:', loginResponse);
-      onLogin(loginResponse.account);
-    } catch (error) {
-      console.error('Login failed:', error);
-      setError('Login failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    
+    // Redirect to backend auth endpoint
+    window.location.href = '/api/auth/login';
   };
 
   return (

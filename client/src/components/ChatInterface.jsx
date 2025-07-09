@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../config/msalConfig';
 import { emailService } from '../services/emailService';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -18,7 +16,6 @@ const ChatInterface = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState(null);
   const messagesEndRef = useRef(null);
-  const { instance } = useMsal();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -27,24 +24,6 @@ const ChatInterface = ({ user }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const getAccessToken = async () => {
-    try {
-      const accounts = instance.getAllAccounts();
-      if (accounts.length === 0) throw new Error('No accounts found');
-      
-      const request = {
-        ...loginRequest,
-        account: accounts[0]
-      };
-      
-      const response = await instance.acquireTokenSilent(request);
-      return response.accessToken;
-    } catch (error) {
-      console.error('Token acquisition failed:', error);
-      throw error;
-    }
-  };
 
   const addMessage = (content, type = 'user') => {
     const newMessage = {
@@ -61,12 +40,10 @@ const ChatInterface = ({ user }) => {
     const lowerInput = input.toLowerCase().trim();
     
     try {
-      const accessToken = await getAccessToken();
-      
       // Summarize emails
       if (lowerInput.includes('summarize') || lowerInput.includes('summary')) {
         const count = extractNumber(input) || 10;
-        const summary = await emailService.getEmailSummary(accessToken, count);
+        const summary = await emailService.getEmailSummary(count);
         
         let response = `Here's a summary of your latest ${summary.totalCount} emails:\n\n`;
         summary.messages.forEach((email, index) => {
@@ -82,9 +59,9 @@ const ChatInterface = ({ user }) => {
       
       // Read specific email
       if (lowerInput.includes('read') && (lowerInput.includes('email') || lowerInput.includes('message'))) {
-        const summary = await emailService.getEmailSummary(accessToken, 5);
+        const summary = await emailService.getEmailSummary(5);
         if (summary.messages.length > 0) {
-          const email = await emailService.getEmail(accessToken, summary.messages[0].id);
+          const email = await emailService.getEmail(summary.messages[0].id);
           setSelectedEmail(email);
           return `Here's the latest email from ${email.from.name}:\n\n**${email.subject}**\n\n${email.body.content}`;
         }
@@ -95,7 +72,7 @@ const ChatInterface = ({ user }) => {
       if (lowerInput.includes('search') || lowerInput.includes('find')) {
         const searchQuery = extractSearchQuery(input);
         if (searchQuery) {
-          const results = await emailService.searchEmails(accessToken, searchQuery);
+          const results = await emailService.searchEmails(searchQuery);
           let response = `Found ${results.totalCount} emails matching "${searchQuery}":\n\n`;
           results.messages.forEach(email => {
             response += `📧 **${email.subject}**\nFrom: ${email.from}\n${email.preview}\n\n`;

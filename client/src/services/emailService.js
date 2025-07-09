@@ -3,14 +3,13 @@ import axios from 'axios';
 class EmailService {
   constructor() {
     this.baseURL = '/api/email';
+    // Configure axios to include credentials for session-based auth
+    axios.defaults.withCredentials = true;
   }
 
-  async getEmailSummary(accessToken, count = 10, filter = null) {
+  async getEmailSummary(count = 10, filter = null) {
     try {
       const config = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
         params: { count, filter }
       };
 
@@ -22,15 +21,9 @@ class EmailService {
     }
   }
 
-  async getEmail(accessToken, messageId) {
+  async getEmail(messageId) {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      };
-
-      const response = await axios.get(`${this.baseURL}/${messageId}`, config);
+      const response = await axios.get(`${this.baseURL}/${messageId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching email:', error);
@@ -38,11 +31,10 @@ class EmailService {
     }
   }
 
-  async sendEmail(accessToken, to, subject, body, isHtml = true) {
+  async sendEmail(to, subject, body, isHtml = true) {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       };
@@ -56,11 +48,10 @@ class EmailService {
     }
   }
 
-  async replyToEmail(accessToken, messageId, body, isHtml = true) {
+  async replyToEmail(messageId, body, isHtml = true) {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       };
@@ -74,12 +65,9 @@ class EmailService {
     }
   }
 
-  async searchEmails(accessToken, query, count = 10) {
+  async searchEmails(query, count = 10) {
     try {
       const config = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
         params: { count }
       };
 
